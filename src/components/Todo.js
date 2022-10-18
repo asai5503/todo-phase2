@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Title } from './index';
+import { Title,AddTodo,List } from './index';
 
 const Todo = () =>{
     const [text,setText] = useState('');
@@ -8,7 +8,6 @@ const Todo = () =>{
     //フォームの状態管理
     const onChangeText = (event) =>{
         setText(event.target.value);
-        console.log(text);
     };
 
     // 追加機能
@@ -23,7 +22,7 @@ const Todo = () =>{
       setText('');  
     };
 
-    //削除機能
+    // 削除機能
     const onClickDelete = (index) =>{
       console.log("onClickDelete");
       const deleteList = [...list];
@@ -31,10 +30,16 @@ const Todo = () =>{
       setList(deleteList);
     };
 
-    //チェックボックス
-    const onClickSwitch = (checked,index) =>{
+    // チェックボックス
+    const onClickSwitch = (index) =>{
       console.log("onClickSwitch");
       console.log(index);
+
+      const changeList = [...list];
+      changeList[index].status = !changeList[index].status;
+      console.log(changeList);
+      setList(changeList);
+
     };
 
     return(
@@ -49,18 +54,19 @@ const Todo = () =>{
             <button onClick={onClickAdd}>＋</button>
           </div>
           <table>
-            <tbody id="todoBody">
-              {list.map((todo, index) => (
-                <tr>
-                  <td><input onClick={() => onClickSwitch(index)}
-                        type="checkbox"
-                        checked = {list.status}/>
-                      </td>
-                  <td className="taskName">{todo.comment}</td>
-                  <td><button onClick={() => onClickDelete(index)}>－</button></td>
-                </tr>
-              ))}
-            </tbody>
+          <tbody id="todoBody">
+            {list.map((todo, index) => (
+            <tr key={index} className = {todo.status ? "isChecked":""}>
+                <td><input onChange={() => onClickSwitch(index)}
+                    type="checkbox"
+                    checked = {todo.status}
+                    />
+                    </td>
+                <td className="taskName">{todo.comment}</td>
+                <td><button onClick={() => onClickDelete(index)}>－</button></td>
+            </tr>
+            ))}
+          </tbody>
           </table>
         </div>
       </>
