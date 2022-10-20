@@ -1,70 +1,49 @@
-import React, {useState} from 'react';
-import { Title,AddTodo,List } from './index';
+import React, {useState} from "react";
+import { Title,Input,Item } from "./index";
+
+const getKey = () => Math.random().toString(32).substring(2);
 
 const Todo = () =>{
-    const [text,setText] = useState('');
     const [list,setList] = useState([]);
 
-    //フォームの状態管理
-    const onChangeText = (event) =>{
-        setText(event.target.value);
-    };
-
     // 追加機能
-    const onClickAdd = () => {
-      if (text === "") return;
-          const newTodo = {
-            comment: text,
-            status: false
-          }
-      list.push(newTodo);
-      console.log(list)
-      setText('');  
+    const handleAdd = (event) =>{
+      setList([...list, {key: getKey(), comment: event ,status: false}]);
     };
 
-    // 削除機能
-    const onClickDelete = (index) =>{
-      console.log("onClickDelete");
-      const deleteList = [...list];
-      deleteList.splice(index,1);
-      setList(deleteList);
+    //削除機能
+    const handleDelete = (event) => {
+      const delItems = list.filter(item => item.key !== event.key);
+      setList(delItems);
     };
 
-    // チェックボックス
-    const onClickSwitch = (index) =>{
-      console.log("onClickSwitch");
-      console.log(index);
-
-      const changeList = [...list];
-      changeList[index].status = !changeList[index].status;
-      console.log(changeList);
-      setList(changeList);
-
+    //チェックボックス機能
+    const handleCheck = (event) => {
+      const newItems = list.map(item => {
+        if (item.key === event.key) {
+          item.status = !item.status;
+        }
+        return item;
+      });
+      setList(newItems);
     };
 
     return(
         <>
         <div className="taskArea">
           <Title/>
-          <div className="addTodo">
-            <input onChange={onChangeText}
-              value={text}
-              placeholder="Add Task"
-            />
-            <button onClick={onClickAdd}>＋</button>
-          </div>
+          <Input
+            onAdd={handleAdd}
+          />
           <table>
           <tbody id="todoBody">
-            {list.map((todo, index) => (
-            <tr key={index} className = {todo.status ? "isChecked":""}>
-                <td><input onChange={() => onClickSwitch(index)}
-                    type="checkbox"
-                    checked = {todo.status}
-                    />
-                    </td>
-                <td className="taskName">{todo.comment}</td>
-                <td><button onClick={() => onClickDelete(index)}>－</button></td>
-            </tr>
+            {list.map((item) => (
+            <Item 
+              key={item.key} 
+              item={item}
+              onCheck={handleCheck}
+              onClick={handleDelete}
+            />
             ))}
           </tbody>
           </table>

@@ -49,3 +49,22 @@
   color:#808080;
   text-decoration: line-through;
 }
+
+.addTask{
+  background-color:#0E7490;
+  color:#FFFFFF;
+  border:#0E7490 solid 2px;
+  border-radius: 10%;
+}
+
+.taskStatus{
+  background-color: #0E7490;
+  border-color: #0E7490;
+}
+
+.delTask{
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color:gray;
+}

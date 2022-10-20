@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+// import React, {useState} from 'react';
 
-const List = () =>{
-    const [list,setList] = useState([]);
+const List = (list,setList) =>{
+    // const [list,setList] = useState([]);
 
     //削除機能
     const onClickDelete = (index) =>{
