@@ -32,39 +32,40 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
-.taskArea{
+.taskArea {
   margin-left: 50px;
 }
 
-.taskName{
-  width:140px;
+.taskName {
+  width: 140px;
 }
 
-.isChecked{
-  color:#808080;
+.isChecked {
+  color: #808080;
   text-decoration: line-through;
 }
 
-.addTask{
-  background-color:#0E7490;
-  color:#FFFFFF;
-  border:#0E7490 solid 2px;
+.addTask {
+  background-color: #0E7490;
+  color: #FFFFFF;
+  border: #0E7490 solid 2px;
   border-radius: 10%;
 }
 
-.taskStatus{
+.taskStatus {
   background-color: #0E7490;
   border-color: #0E7490;
 }
 
-.delTask{
+.delTask {
   background: transparent;
   border: none;
   font-size: 20px;
-  color:gray;
+  color: gray;
 }

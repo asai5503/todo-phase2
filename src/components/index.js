@@ -1,4 +1,4 @@
 export {default as Todo} from './Todo'
-export {default as Title} from './Title'
-export {default as Input} from './Input'
-export {default as Item} from './Item'
+export {default as DayOfWeekTitle} from './DayOfWeekTitle'
+export {default as TodoInput} from './TodoInput'
+export {default as TodoItem} from './TodoItem'

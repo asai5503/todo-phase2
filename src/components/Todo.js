@@ -1,55 +1,61 @@
-import React, {useState} from "react";
-import { Title,Input,Item } from "./index";
+import { useState } from "react";
+import { DayOfWeekTitle, TodoInput, TodoItem } from "./index";
 
 const getKey = () => Math.random().toString(32).substring(2);
 
-const Todo = () =>{
-    const [list,setList] = useState([]);
+const Todo = () => {
+  const [todos, setTodos] = useState([]);
 
-    // 追加機能
-    const handleAdd = (event) =>{
-      setList([...list, {key: getKey(), comment: event ,status: false}]);
-    };
+  // 追加機能
+  const handleAdd = (title) => {
+    const newTodo = {
+      key: getKey(), 
+      comment: title, 
+      status: false
+    }
 
-    //削除機能
-    const handleDelete = (event) => {
-      const delItems = list.filter(item => item.key !== event.key);
-      setList(delItems);
-    };
+    setTodos([...todos, newTodo]);
+  };
 
-    //チェックボックス機能
-    const handleCheck = (event) => {
-      const newItems = list.map(item => {
-        if (item.key === event.key) {
-          item.status = !item.status;
-        }
-        return item;
-      });
-      setList(newItems);
-    };
+  //削除機能
+  const handleDelete = (todoItem) => {
+    const removedTodos = todos.filter(item => item.key !== todoItem.key);
+    setTodos(removedTodos);
+  };
 
-    return(
-        <>
-        <div className="taskArea">
-          <Title/>
-          <Input
-            onAdd={handleAdd}
-          />
-          <table>
-          <tbody id="todoBody">
-            {list.map((item) => (
-            <Item 
-              key={item.key} 
-              item={item}
-              onCheck={handleCheck}
-              onClick={handleDelete}
-            />
+  //チェックボックス機能
+  const handleCheck = (event) => {
+    const newItems = todos.map(item => {
+      if (item.key === event.key) {
+        item.status = !item.status;
+      }
+      return item;
+    });
+    setTodos(newItems);
+  };
+
+  return (
+    <>
+      <div className="taskArea">
+        <DayOfWeekTitle />
+        <TodoInput
+          onAdd={handleAdd}
+        />
+        <table>
+          <tbody>
+            {todos.map((item) => (
+              <TodoItem
+                key={item.key}
+                item={item}
+                onCheck={handleCheck}
+                onClick={handleDelete}
+              />
             ))}
           </tbody>
-          </table>
-        </div>
-      </>
-    );
+        </table>
+      </div>
+    </>
+  );
 };
 
 export default Todo;
