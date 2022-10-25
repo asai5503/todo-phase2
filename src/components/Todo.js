@@ -9,8 +9,8 @@ const Todo = () => {
   // 追加機能
   const handleAdd = (title) => {
     const newTodo = {
-      key: getKey(), 
-      comment: title, 
+      key: getKey(),
+      comment: title,
       status: false
     }
 
@@ -24,9 +24,9 @@ const Todo = () => {
   };
 
   //チェックボックス機能
-  const handleCheck = (event) => {
+  const handleCheck = (checkedItem) => {
     const newItems = todos.map(item => {
-      if (item.key === event.key) {
+      if (item.key === checkedItem.key) {
         item.status = !item.status;
       }
       return item;
@@ -41,18 +41,11 @@ const Todo = () => {
         <TodoInput
           onAdd={handleAdd}
         />
-        <table>
-          <tbody>
-            {todos.map((item) => (
-              <TodoItem
-                key={item.key}
-                item={item}
-                onCheck={handleCheck}
-                onClick={handleDelete}
-              />
-            ))}
-          </tbody>
-        </table>
+        <TodoItem
+          todos={todos}
+          onCheck={handleCheck}
+          onClick={handleDelete}
+        />
       </div>
     </>
   );
