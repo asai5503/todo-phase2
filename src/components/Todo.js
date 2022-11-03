@@ -1,50 +1,61 @@
 import { useState } from "react";
 import { DayOfWeekTitle, TodoInput, TodoItem } from "./index";
+import { v4 as uuidv4 } from "uuid";
 
-const getKey = () => Math.random().toString(32).substring(2);
+const getKey = () => uuidv4();
 
 const Todo = () => {
-  const [todos, setTodos] = useState([]);
+  const [todoList, setTodoList] = useState([]);
+  const [todoObj, setTodoObj] = useState({});
 
   // 追加機能
   const handleAdd = (title) => {
+    const todoId = getKey();
     const newTodo = {
-      key: getKey(),
-      comment: title,
-      status: false
+      [todoId]: {
+        comment: title,
+        status: false
+      }
     }
 
-    setTodos([...todos, newTodo]);
+    setTodoObj({ ...todoObj, ...newTodo });
+    setTodoList([...todoList, todoId]);
+    console.log(todoId);
   };
 
-  //削除機能
-  const handleDelete = (todoItem) => {
-    const removedTodos = todos.filter(item => item.key !== todoItem.key);
-    setTodos(removedTodos);
+  /**
+   * todoObjとtodoListから、受け取ったtodoIdの内容を削除する
+   * @param {String} todoId
+   */
+  const handleDelete = (todoId) => {
+    const _todoObj = { ...todoObj };
+    delete _todoObj[todoId];
+    setTodoObj(_todoObj);
+
+    const removedTodoList = todoList.filter((_todoId) => _todoId !== todoId);
+    setTodoList(removedTodoList);
   };
 
-  //チェックボックス機能
-  const handleCheck = (checkedItem) => {
-    const newItems = todos.map(item => {
-      if (item.key === checkedItem.key) {
-        item.status = !item.status;
-      }
-      return item;
-    });
-    setTodos(newItems);
+  /**
+   * 受け取ったtodoIdのtodo.statusを反転させる
+   * @param {String} todoId
+   */
+  const handleCheck = (todoId) => {
+    const _todoObj = { ...todoObj };
+    _todoObj[todoId].status = !_todoObj[todoId].status;
+    setTodoObj(_todoObj);
   };
 
   return (
     <>
       <div className="taskArea">
         <DayOfWeekTitle />
-        <TodoInput
-          onAdd={handleAdd}
-        />
+        <TodoInput onAdd={handleAdd} />
         <TodoItem
-          todos={todos}
+          todoList={todoList}
+          todoObj={todoObj}
           onCheck={handleCheck}
-          onClick={handleDelete}
+          onDelete={handleDelete}
         />
       </div>
     </>

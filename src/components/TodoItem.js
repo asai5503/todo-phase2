@@ -1,30 +1,33 @@
-const TodoItem = ({ todos, onCheck, onClick }) => {
+const TodoItem = ({ todoList, todoObj, onCheck, onDelete }) => {
 
     // 削除機能
-    const onClickDelete = (item) => {
-        onClick(item);
+    const onClickDelete = (todoId) => {
+        onDelete(todoId);
     };
 
     // チェックボックス
-    const onClickSwitch = (item) => {
-        onCheck(item);
+    const onClickSwitch = (todoId) => {
+        onCheck(todoId);
     };
 
     return (
         <table>
             <tbody>
-                {todos.map((item) => (
-                    <tr key={item.key} className={item.status ? "isChecked" : ""}>
+                {todoList.map((todoId) => (
+                    <tr
+                        key={todoId}
+                        className={todoObj[todoId].status ? "isChecked" : ""}
+                    >
                         <td><input
-                            onChange={() => onClickSwitch(item)}
+                            onChange={() => onClickSwitch(todoId)}
                             type="checkbox"
-                            checked={item.status}
+                            checked={todoObj[todoId].status}
                             className="taskStatus"
                         />
                         </td>
-                        <td className="taskName">{item.comment}</td>
+                        <td className="taskName">{todoObj[todoId].comment}</td>
                         <td><button
-                            onClick={() => onClickDelete(item)}
+                            onClick={() => onClickDelete(todoId)}
                             className="delTask"
                         >－</button></td>
                     </tr>
