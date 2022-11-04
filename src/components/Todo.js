@@ -20,7 +20,6 @@ const Todo = () => {
 
     setTodoObj({ ...todoObj, ...newTodo });
     setTodoList([...todoList, todoId]);
-    console.log(todoId);
   };
 
   /**
@@ -47,18 +46,16 @@ const Todo = () => {
   };
 
   return (
-    <>
-      <div className="taskArea">
-        <DayOfWeekTitle />
-        <TodoInput onAdd={handleAdd} />
-        <TodoItem
-          todoList={todoList}
-          todoObj={todoObj}
-          onCheck={handleCheck}
-          onDelete={handleDelete}
-        />
-      </div>
-    </>
+    <div className="taskArea">
+      <DayOfWeekTitle />
+      <TodoInput onAdd={handleAdd} />
+      <TodoItem
+        todoList={todoList}
+        todoObj={todoObj}
+        onCheck={handleCheck}
+        onDelete={handleDelete}
+      />
+    </div>
   );
 };
 
