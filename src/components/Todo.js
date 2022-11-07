@@ -48,13 +48,13 @@ const Todo = () => {
   return (
     <div className="taskArea">
       <DayOfWeekTitle />
-      <TodoInput onAdd={handleAdd} />
+      <TodoInput
+        onAdd={handleAdd} />
       <TodoItem
         todoList={todoList}
         todoObj={todoObj}
         onCheck={handleCheck}
-        onDelete={handleDelete}
-      />
+        onDelete={handleDelete} />
     </div>
   );
 };
