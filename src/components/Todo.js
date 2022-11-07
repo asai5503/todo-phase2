@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { DayOfWeekTitle, TodoInput, TodoItem } from "./index";
+import { DayOfWeekTitle, TodoInput, TodoItem, db } from "./index";
+import { collection, addDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 
+//uuidを使うための関数を宣言
 const getKey = () => uuidv4();
 
 const Todo = () => {
@@ -11,12 +13,20 @@ const Todo = () => {
   // 追加機能
   const handleAdd = (title) => {
     const todoId = getKey();
-    const newTodo = {
+
+    const newTodo = addDoc(collection(db, "todos"), {
       [todoId]: {
         comment: title,
         status: false
       }
-    }
+    });
+
+    // const newTodo = {
+    //   [todoId]: {
+    //     comment: title,
+    //     status: false
+    //   }
+    // }
 
     setTodoObj({ ...todoObj, ...newTodo });
     setTodoList([...todoList, todoId]);
