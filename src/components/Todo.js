@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { DayOfWeekTitle, TodoInput, TodoItem, db } from "./index";
-import { collection, addDoc } from "firebase/firestore";
-import { v4 as uuidv4 } from "uuid";
-
-//uuidを使うための関数を宣言
-const getKey = () => uuidv4();
+import { collection, addDoc, deleteDoc, updateDoc, doc } from "firebase/firestore";
 
 const Todo = () => {
   const [todoList, setTodoList] = useState([]);
@@ -12,24 +8,27 @@ const Todo = () => {
 
   // 追加機能
   const handleAdd = (title) => {
-    const todoId = getKey();
 
-    const newTodo = addDoc(collection(db, "todos"), {
-      [todoId]: {
+    async function addTodo() {
+      const newTodoRef = await addDoc(collection(db, "todos"), {
         comment: title,
         status: false
-      }
-    });
+      });
 
-    // const newTodo = {
-    //   [todoId]: {
-    //     comment: title,
-    //     status: false
-    //   }
-    // }
+      const newTodoId = newTodoRef.id;
 
-    setTodoObj({ ...todoObj, ...newTodo });
-    setTodoList([...todoList, todoId]);
+      const newTodo = {
+        [newTodoId]: {
+          comment: title,
+          status: false
+        }
+      };
+
+      setTodoObj({ ...todoObj, ...newTodo });
+      setTodoList([...todoList, newTodoId]);
+    }
+
+    addTodo();
   };
 
   /**
@@ -43,6 +42,9 @@ const Todo = () => {
 
     const removedTodoList = todoList.filter((_todoId) => _todoId !== todoId);
     setTodoList(removedTodoList);
+
+    //firestoreの値を更新
+    deleteDoc(doc(db, "todos", todoId));
   };
 
   /**
@@ -53,6 +55,14 @@ const Todo = () => {
     const _todoObj = { ...todoObj };
     _todoObj[todoId].status = !_todoObj[todoId].status;
     setTodoObj(_todoObj);
+
+    //firestoreの値を更新
+    const statusRef = doc(db, "todos", todoId);
+
+    updateDoc(statusRef, {
+      status: _todoObj[todoId].status
+    });
+
   };
 
   return (
@@ -63,6 +73,8 @@ const Todo = () => {
       <TodoItem
         todoList={todoList}
         todoObj={todoObj}
+        setTodoList={setTodoList}
+        setTodoObj={setTodoObj}
         onCheck={handleCheck}
         onDelete={handleDelete} />
     </div>
