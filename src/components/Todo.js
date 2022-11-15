@@ -7,15 +7,15 @@ const Todo = () => {
   const [todoObj, setTodoObj] = useState({});
 
   // 追加機能
-  const handleAdd = (title) => {
+  const handleAdd = async (title) => {
 
-    async function addTodo() {
-      const newTodoRef = await addDoc(collection(db, "todos"), {
+    try {
+      const doc = await addDoc(collection(db, "todos"), {
         comment: title,
         status: false
       });
 
-      const newTodoId = newTodoRef.id;
+      const newTodoId = doc.id;
 
       const newTodo = {
         [newTodoId]: {
@@ -26,9 +26,10 @@ const Todo = () => {
 
       setTodoObj({ ...todoObj, ...newTodo });
       setTodoList([...todoList, newTodoId]);
-    }
 
-    addTodo();
+    } catch (e) {
+      console.log("todo追加時にエラー発生",e);
+    }
   };
 
   /**
@@ -44,7 +45,11 @@ const Todo = () => {
     setTodoList(removedTodoList);
 
     //firestoreの値を更新
-    deleteDoc(doc(db, "todos", todoId));
+    try {
+      deleteDoc(doc(db, "todos", todoId));
+    } catch (e) {
+      console.log("todo削除時にエラー発生",e);
+    }
   };
 
   /**
@@ -57,11 +62,15 @@ const Todo = () => {
     setTodoObj(_todoObj);
 
     //firestoreの値を更新
-    const statusRef = doc(db, "todos", todoId);
+    try {
+      const statusRef = doc(db, "todos", todoId);
 
-    updateDoc(statusRef, {
-      status: _todoObj[todoId].status
-    });
+      updateDoc(statusRef, {
+        status: _todoObj[todoId].status
+      });
+    } catch (e) {
+      console.log("todo.statusの反転時にエラー発生",e);
+    }
 
   };
 

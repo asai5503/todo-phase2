@@ -5,24 +5,28 @@ import { collection, getDocs } from "firebase/firestore";
 const TodoItem = ({ todoList, setTodoList, todoObj, setTodoObj, onCheck, onDelete }) => {
 
   useEffect(() => {
-    //データベースからデータを取得する
-    async function docsData() {
-      const snapshot = await getDocs(collection(db, "todos"));
+    try {
+      //データベースからデータを取得する
+      async function docsData() {
+        const snapshot = await getDocs(collection(db, "todos"));
 
-      snapshot.forEach((doc) => {
-        const newTodoId = doc.id;
-        const newTodo = {
-          [newTodoId]: doc.data()
-        };
+        snapshot.forEach((doc) => {
+          const newTodoId = doc.id;
+          const newTodo = {
+            [newTodoId]: doc.data()
+          };
 
-        setTodoObj((todoObj) => ({ ...todoObj, ...newTodo }));
-        setTodoList((todoList) => ([...todoList, newTodoId]));
+          setTodoObj((todoObj) => ({ ...todoObj, ...newTodo }));
+          setTodoList((todoList) => ([...todoList, newTodoId]));
 
-      });
-    };
+        });
+      };
 
-    docsData();
+      docsData();
 
+    }catch(e){
+      console.log("todo削除時にエラー発生",e);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
