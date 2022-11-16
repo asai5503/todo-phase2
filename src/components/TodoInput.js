@@ -6,7 +6,7 @@ const TodoInput = ({ onAdd }) => {
   //フォームの状態管理
   const onChangeText = (event) => { setText(event.target.value) };
 
-  const onClickAdd = () => {
+  const handleAdd = () => {
     if (text === "") return;
     onAdd(text);
     setText("");
@@ -20,7 +20,7 @@ const TodoInput = ({ onAdd }) => {
         value={text}
       />
       <button
-        onClick={onClickAdd}
+        onClick={handleAdd}
         className="addTask"
       >＋</button>
     </div>

@@ -7,7 +7,7 @@ const TodoItem = ({ todoList, setTodoList, todoObj, setTodoObj, onCheck, onDelet
   useEffect(() => {
     try {
       //データベースからデータを取得する
-      async function docsData() {
+      async function fetchTodos() {
         const snapshot = await getDocs(collection(db, "todos"));
 
         snapshot.forEach((doc) => {
@@ -22,21 +22,21 @@ const TodoItem = ({ todoList, setTodoList, todoObj, setTodoObj, onCheck, onDelet
         });
       };
 
-      docsData();
+      fetchTodos();
 
     }catch(e){
-      console.log("todo削除時にエラー発生",e);
+      console.log("todo追加時にエラー発生",e);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 削除機能
-  const onClickDelete = (todoId) => {
+  const handleDelete = (todoId) => {
     onDelete(todoId);
   };
 
   // チェックボックス
-  const onClickSwitch = (todoId) => {
+  const handleCheck = (todoId) => {
     onCheck(todoId);
   };
 
@@ -50,7 +50,7 @@ const TodoItem = ({ todoList, setTodoList, todoObj, setTodoObj, onCheck, onDelet
               className={todoObj[todoId].status ? "isChecked" : ""}
             >
               <td><input
-                onChange={() => onClickSwitch(todoId)}
+                onChange={() => handleCheck(todoId)}
                 type="checkbox"
                 checked={todoObj[todoId].status}
                 className="taskStatus"
@@ -58,7 +58,7 @@ const TodoItem = ({ todoList, setTodoList, todoObj, setTodoObj, onCheck, onDelet
               </td>
               <td className="taskName">{todoObj[todoId].comment}</td>
               <td><button
-                onClick={() => onClickDelete(todoId)}
+                onClick={() => handleDelete(todoId)}
                 className="delTask"
               >－</button></td>
             </tr>
